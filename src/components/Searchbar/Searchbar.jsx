@@ -3,25 +3,24 @@ import {
   SearchbarHeader,
   SearchForm,
   SearchFormButton,
-  SearchFormButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled';
 import { ReactComponent as Search } from '../search.svg';
 
 class Searchbar extends Component {
   state = {
-    image: '',
+    search: '',
   };
 
   onInputChange = evt => {
     this.setState({
-      image: evt.currentTarget.value,
+      search: evt.currentTarget.value,
     });
   };
 
   onFormInputSubmit = evt => {
     evt.preventDefault();
-    this.props.onFormSubmit(this.state.image);
+    this.props.onFormSubmit(this.state.search);
   };
 
   render() {
@@ -29,9 +28,7 @@ class Searchbar extends Component {
       <SearchbarHeader>
         <SearchForm onSubmit={this.onFormInputSubmit}>
           <SearchFormButton type="submit" className="button">
-            <SearchFormButtonLabel>
-              <Search width="40" height="40" />
-            </SearchFormButtonLabel>
+            <Search width="40" height="40" />
           </SearchFormButton>
 
           <SearchFormInput

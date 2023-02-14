@@ -8,13 +8,12 @@ import Button from '../Button/Button';
 
 class App extends Component {
   state = {
-    images: '',
+    search: '',
     page: 1,
-    loading: false,
   };
 
   onSubmit = data => {
-    this.setState({ images: data });
+    this.setState({ search: data });
   };
 
   onLoadMore = () => {
@@ -24,14 +23,14 @@ class App extends Component {
   };
 
   render() {
-    const { images, page, loading } = this.state;
+    const { search, page } = this.state;
 
     return (
       <AppWrap>
         <Searchbar onFormSubmit={this.onSubmit} />
 
-        <ImageGallery loadingState={loading} search={images} page={page} />
-        <Button loadMore={this.onLoadMore} />
+        <ImageGallery search={search} page={page} />
+        {search !== '' && <Button loadMore={this.onLoadMore} />}
       </AppWrap>
     );
   }
