@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Component } from 'react';
 import { ImageGalleryList } from './ImageGallery.styled';
@@ -66,5 +68,10 @@ class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  page: PropTypes.number.isRequired,
+  search: PropTypes.string.isRequired,
+};
 
 export default ImageGallery;
