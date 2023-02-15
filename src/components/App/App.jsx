@@ -1,10 +1,8 @@
 import { Component } from 'react';
 import { AppWrap } from './App.styled';
-// import { RotatingTriangles } from 'react-loader-spinner';
 
 import ImageGallery from '../ImageGallery/ImageGallery';
 import Searchbar from '../Searchbar/Searchbar';
-import Button from '../Button/Button';
 
 class App extends Component {
   state = {
@@ -13,7 +11,7 @@ class App extends Component {
   };
 
   onSubmit = data => {
-    this.setState({ search: data });
+    this.setState({ search: data, page: 1 });
   };
 
   onLoadMore = () => {
@@ -28,9 +26,7 @@ class App extends Component {
     return (
       <AppWrap>
         <Searchbar onFormSubmit={this.onSubmit} />
-
-        <ImageGallery search={search} page={page} />
-        {search !== '' && <Button loadMore={this.onLoadMore} />}
+        <ImageGallery search={search} page={page} loadMore={this.onLoadMore} />
       </AppWrap>
     );
   }

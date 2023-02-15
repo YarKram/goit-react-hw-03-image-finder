@@ -3,26 +3,28 @@ import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Component } from 'react';
 import { ImageGalleryList } from './ImageGallery.styled';
-import { fetchPictures } from 'components/Api/picturesApi';
+import { fetchPictures } from 'api/picturesApi';
+import Button from 'components/Button/Button';
 import Loader from 'components/Loader/Loader';
 
 class ImageGallery extends Component {
   state = {
-    loading: false,
+    status: 'idle',
     images: [],
+    page: this.props.page,
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { page, search } = this.props;
 
     if (search !== prevProps.search) {
-      this.setState({ loading: true });
-      this.loadMore();
+      this.setState({ status: 'pending' });
+      this.fetchPics();
     }
 
     if (page > prevProps.page) {
-      this.setState({ loading: true });
-      this.fetchPics();
+      this.setState({ status: 'pending' });
+      this.loadMore();
     }
   }
 
@@ -31,10 +33,10 @@ class ImageGallery extends Component {
 
     fetchPictures(page, search)
       .then(res => {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...res.data.hits],
-          loading: false,
-        }));
+        this.setState({
+          images: res.data.hits,
+          status: 'resolved',
+        });
       })
       .catch(error => console.log(error));
   };
@@ -44,26 +46,29 @@ class ImageGallery extends Component {
 
     fetchPictures(page, search)
       .then(res => {
-        this.setState({
-          images: res.data.hits,
-          loading: false,
-          page: 1,
-        });
+        this.setState(prevState => ({
+          images: [...prevState.images, ...res.data.hits],
+          status: 'resolved',
+        }));
       })
       .catch(error => console.log(error));
   };
 
   render() {
-    const { images, loading } = this.state;
+    const { images, loading, status } = this.state;
+    const { loadMore, search } = this.props;
     return (
       <>
-        <ImageGalleryList>
-          {images.map(image => {
-            return <ImageGalleryItem key={image.id} data={image} />;
-          })}
-        </ImageGalleryList>
+        {search !== '' && (
+          <ImageGalleryList>
+            {images.map(image => {
+              return <ImageGalleryItem key={image.id} data={image} />;
+            })}
+          </ImageGalleryList>
+        )}
 
-        {loading && <Loader />}
+        {status === 'pending' && <Loader />}
+        {status === 'resolved' && <Button loadMore={loadMore} />}
       </>
     );
   }
