@@ -55,7 +55,7 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { images, loading, status } = this.state;
+    const { images, status } = this.state;
     const { loadMore, search } = this.props;
     return (
       <>
