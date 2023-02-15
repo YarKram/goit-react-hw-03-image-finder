@@ -56,10 +56,10 @@ class ImageGallery extends Component {
 
   render() {
     const { images, status } = this.state;
-    const { loadMore, search } = this.props;
+    const { loadMore } = this.props;
     return (
       <>
-        {search !== '' && (
+        {images.length > 0 && (
           <ImageGalleryList>
             {images.map(image => {
               return <ImageGalleryItem key={image.id} data={image} />;
